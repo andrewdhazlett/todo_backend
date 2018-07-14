@@ -1,13 +1,18 @@
 use actix_web::{http::Method, middleware::cors::Cors, App};
 use resources::*;
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct Todo {
     pub id: String,
     pub title: String,
     pub order: u64,
     pub completed: bool,
     pub url: String,
+}
+
+#[derive(Deserialize)]
+pub struct NewTodo {
+    pub title: String,
 }
 
 pub struct TodoState {
@@ -26,7 +31,10 @@ pub fn create_app() -> App<TodoState> {
     };
     App::with_state(state).configure(|app| {
         Cors::for_app(app)
-            .resource("/todos", |r| r.method(Method::GET).with(get_todos))
+            .resource("/todos", |r| {
+                r.method(Method::GET).with(get_todos);
+                r.method(Method::POST).with(create_todo);
+            })
             .register()
     })
 }

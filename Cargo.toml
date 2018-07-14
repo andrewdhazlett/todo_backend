@@ -7,6 +7,7 @@ authors = ["andrewdhazlett <andrew@hazlett.me>"]
 actix = "^0.5"
 serde = "^1.0"
 serde_derive = "^1.0"
+uuid = "^0.6"
 
 [dependencies.actix-web]
 version = "^0.6"

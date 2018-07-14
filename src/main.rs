@@ -2,6 +2,7 @@ extern crate actix;
 extern crate actix_web;
 #[macro_use]
 extern crate serde_derive;
+extern crate uuid;
 
 mod app;
 mod resources;
