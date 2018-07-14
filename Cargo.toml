@@ -1,0 +1,11 @@
+[package]
+name = "todo_backend"
+version = "0.1.0"
+authors = ["andrewdhazlett <andrew@hazlett.me>"]
+
+[dependencies]
+actix = "^0.5"
+
+[dependencies.actix-web]
+version = "^0.6"
+default-features = false
