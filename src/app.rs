@@ -1,16 +1,32 @@
-use actix_web::{http::Method, App};
-use resources::{get_greeting, put_name};
-use std::cell::RefCell;
+use actix_web::{http::Method, middleware::cors::Cors, App};
+use resources::*;
+
+#[derive(Clone, Serialize)]
+pub struct Todo {
+    pub id: String,
+    pub title: String,
+    pub order: u64,
+    pub completed: bool,
+    pub url: String,
+}
 
 pub struct TodoState {
-    pub name: RefCell<String>,
+    pub todos: Vec<Todo>,
 }
 
 pub fn create_app() -> App<TodoState> {
     let state = TodoState {
-        name: RefCell::from("Fred".to_string()),
+        todos: vec![Todo {
+            id: "default todo id".to_string(),
+            title: "Learn redux".to_string(),
+            order: 0,
+            completed: false,
+            url: "".to_string(),
+        }],
     };
-    App::with_state(state)
-        .resource("/", |r| r.method(Method::GET).with(get_greeting))
-        .resource("/{name}", |r| r.method(Method::PUT).with(put_name))
+    App::with_state(state).configure(|app| {
+        Cors::for_app(app)
+            .resource("/todos", |r| r.method(Method::GET).with(get_todos))
+            .register()
+    })
 }

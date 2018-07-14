@@ -1,19 +1,6 @@
-use actix_web::{Path, State};
-use app::TodoState;
+use actix_web::{Json, State};
+use app::{Todo, TodoState};
 
-#[derive(Deserialize)]
-pub struct GreetingParams {
-    name: String,
-}
-
-pub fn put_name(
-    (state, params): (State<TodoState>, Path<GreetingParams>),
-) -> String {
-    state.name.replace(params.name.clone());
-    "success".to_string()
-}
-
-pub fn get_greeting(state: State<TodoState>) -> String {
-    let name = state.name.try_borrow().unwrap();
-    format!("Hello, {}!", &name)
+pub fn get_todos(state: State<TodoState>) -> Json<Vec<Todo>> {
+    Json(state.todos.clone())
 }
