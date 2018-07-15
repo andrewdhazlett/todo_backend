@@ -15,3 +15,7 @@ pub fn create_todo(body: Json<NewTodo>) -> Json<Todo> {
         url: "".to_string(),
     })
 }
+
+pub fn delete_todos(_state: State<TodoState>) -> Json<Vec<Todo>> {
+    Json(Vec::new())
+}
