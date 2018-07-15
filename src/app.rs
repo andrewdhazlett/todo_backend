@@ -1,5 +1,6 @@
 use actix_web::{http::Method, middleware::cors::Cors, App};
 use resources::*;
+use std::cell::RefCell;
 
 #[derive(Clone, Serialize, Deserialize)]
 pub struct Todo {
@@ -16,18 +17,18 @@ pub struct NewTodo {
 }
 
 pub struct TodoState {
-    pub todos: Vec<Todo>,
+    pub todos: RefCell<Vec<Todo>>,
 }
 
 pub fn create_app() -> App<TodoState> {
     let state = TodoState {
-        todos: vec![Todo {
+        todos: RefCell::from(vec![Todo {
             id: "default todo id".to_string(),
             title: "Learn redux".to_string(),
             order: 0,
             completed: false,
             url: "".to_string(),
-        }],
+        }]),
     };
     App::with_state(state).configure(|app| {
         Cors::for_app(app)
