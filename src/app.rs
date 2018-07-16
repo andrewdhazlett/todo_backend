@@ -37,6 +37,9 @@ pub fn create_app() -> App<TodoState> {
                 r.method(Method::POST).with(create_todo);
                 r.method(Method::DELETE).with(delete_todos);
             })
+            .resource("/todos/{id}", |r| {
+                r.method(Method::GET).with(get_todo);
+            })
             .register()
     })
 }
