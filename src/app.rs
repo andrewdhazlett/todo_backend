@@ -2,7 +2,7 @@ use actix_web::{http::Method, middleware::cors::Cors, App};
 use resources::*;
 use std::cell::RefCell;
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Todo {
     pub id: String,
     pub title: String,
@@ -32,12 +32,13 @@ pub fn create_app() -> App<TodoState> {
     };
     App::with_state(state).configure(|app| {
         Cors::for_app(app)
-            .resource("/todos", |r| {
+            .resource("/", |r| {
                 r.method(Method::GET).with(get_todos);
                 r.method(Method::POST).with(create_todo);
                 r.method(Method::DELETE).with(delete_todos);
             })
-            .resource("/todos/{id}", |r| {
+            .resource("/{id}", |r| {
+                r.name("todo");
                 r.method(Method::GET).with(get_todo);
             })
             .register()
